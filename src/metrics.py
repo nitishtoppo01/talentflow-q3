@@ -198,6 +198,13 @@ def c2():
     lo_r = 100.0 * acc / denom_all
     hi_r = 100.0 * (acc + len(unresolved)) / denom_all
 
+    # D3 spec is the single source of truth for this number.
+    from datetime import date as _date
+    from acceptance import acceptance as _spec
+    _p = _spec(OFFERS, APP, as_of=_date(2026, 9, 16))
+    assert (_p["accepted"], _p["n"]) == (acc, n), (
+        "D3 spec and Stage 4 waterfall disagree: spec={}/{} waterfall={}/{}".format(
+            _p["accepted"], _p["n"], acc, n))
     emit("C2", "Offer acceptance rate (cleaned)",
          "{:.1f}% [CI {:.1f}-{:.1f}]".format(p, lo, hi),
          "collapse re-issued offers; exclude two-req conflict; exclude offers with no "
@@ -206,9 +213,11 @@ def c2():
     emit("C2", "Offer acceptance rate (raw)", "72.2%",
          "accepted / all offers incl. Pending", "Low (n<30)", 36, "the VP's ~72%")
     emit("C2", "Offer acceptance, unresolved-record range",
-         "{:.1f}% - {:.1f}%".format(lo_r, hi_r),
-         "lower = all 4 contradictory Pending count as declined; upper = all accepted",
-         "Low", denom_all, "the decision flips inside this range")
+         "{:.1f}% - {:.1f}%".format(_p["range_low"], _p["range_high"]),
+         "D3 spec (src/acceptance.py): lower = all {} unresolved count as declined, "
+         "upper = all accepted".format(_p["unresolved"]),
+         "Low", _p["n"] + _p["unresolved"], "the decision flips inside this range; "
+         "reasons: " + str(_p["unresolved_reasons"]))
     emit("C2", "Genuine declines",
          "{}".format(sum(1 for o in resolved if o["fields"].get("Status") == "Declined")),
          "Status=='Declined' after cleaning; counts not a rate because n<30", "Low (n<30)",

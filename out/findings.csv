@@ -7,7 +7,7 @@ C1,Job-board share of applications,67.8%,cleaned applications,High,345,src/metri
 C1,Screening load per job-board hire,29 applications,cleaned apps / cleaned hires,Medium,234,src/metrics.py,vs 3 for referral
 C2,Offer acceptance rate (cleaned),82.1% [CI 64.4-92.1],collapse re-issued offers; exclude two-req conflict; exclude offers with no decision; exclude contradictory Pending,Low (n<30),28,src/metrics.py,THE DECIDING NUMBER for C2
 C2,Offer acceptance rate (raw),72.2%,accepted / all offers incl. Pending,Low (n<30),36,src/metrics.py,the VP's ~72%
-C2,"Offer acceptance, unresolved-record range",71.9% - 84.4%,lower = all 4 contradictory Pending count as declined; upper = all accepted,Low,32,src/metrics.py,the decision flips inside this range
+C2,"Offer acceptance, unresolved-record range",69.7% - 84.8%,"D3 spec (src/acceptance.py): lower = all 5 unresolved count as declined, upper = all accepted",Low,33,src/metrics.py,"the decision flips inside this range; reasons: {'status Pending but a decision is dated': 4, 'undecided for more than 45 days': 1}"
 C2,Genuine declines,5,Status=='Declined' after cleaning; counts not a rate because n<30,Low (n<30),28,src/metrics.py,"reasons: {'Counter Offer': 3, 'Location': 1, 'Compensation': 1}"
 D2,Source-signal conflict (Referred By vs Candidates.Source),24 of 27 referred applications,audit anomaly 1,High,27,src/metrics.py,misattributes referral hires to job boards; ~4/quarter
 D2,Offers blocked from a trustworthy rate,7 of 36,contradictory Pending (4) + open (1) + conflict (2),High,36,src/metrics.py,~6 offers/quarter

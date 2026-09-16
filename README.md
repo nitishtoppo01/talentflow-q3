@@ -14,8 +14,8 @@ Standing rules for the analysis are in `CLAUDE.md`.
 |---|---|
 | Prep (tooling install, pre-flight) | from ~08:30 IST |
 | **Exercise start** | **08:54 AM IST (2026-09-16T03:24:15Z)** |
-| Exercise end | _to be filled at Stage 7_ |
-| Total minutes | _to be filled at Stage 7_ |
+| **Exercise end** | **09:38 AM IST** |
+| Total minutes | 08:54 -> 09:38 AM = 44 min on the clock, plus ~24 min prep before it |
 
 ## Reproduce
 
@@ -45,5 +45,13 @@ notice.
 | `out/` | Every generated number |
 | `docs/submission.md` | Deliverables, ordered D5 -> D1 -> D2 -> D3 -> D4 |
 
-`.env`, `data/` and `.venv/` are git-ignored: the token is secret and the cache holds
+## Reproduced from a clean clone
+
+`bash run_all.sh` was run in a fresh `git clone` with only `.env` copied in.
+All 10 `out/` artefacts and `docs/submission.md` are **byte-identical** to the
+originals except `out/pull_verification.md`, which differs only in its pull
+timestamp. Manifest record counts match exactly: 892 records, 14 requests, per-table
+counts unchanged. 26/26 tests pass.
+
+`.env`, `data/`, `.venv/` and `transcript/` are git-ignored: the token is secret and the cache holds
 candidate PII.

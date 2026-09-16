@@ -5,10 +5,23 @@ cd "$(dirname "$0")"
 
 PY=.venv/bin/python
 if [ ! -x "$PY" ]; then
-  echo "== creating venv =="
-  python3 -m venv .venv
+  # Pick an interpreter that is actually >= 3.10. A bare `python3` is 3.9 on stock
+  # macOS, and the pinned deps have no 3.9 build, so this must not be left to PATH.
+  BOOT=""
+  for c in python3.13 python3.12 python3.11 python3.10 python3; do
+    if command -v "$c" >/dev/null 2>&1 && "$c" -c 'import sys; sys.exit(0 if sys.version_info[:2] >= (3,10) else 1)' 2>/dev/null; then
+      BOOT="$c"; break
+    fi
+  done
+  if [ -z "$BOOT" ]; then
+    echo "ERROR: no Python 3.10+ found on PATH. Install one, e.g. brew install python@3.12" >&2
+    exit 1
+  fi
+  echo "== creating venv with $($BOOT --version) =="
+  "$BOOT" -m venv .venv
 fi
-.venv/bin/pip install --quiet -r requirements.txt
+.venv/bin/python -m pip install --quiet --upgrade pip
+.venv/bin/python -m pip install --quiet -r requirements.txt
 
 run_step () {   # run_step <label> <script>
   if [ -f "$2" ]; then

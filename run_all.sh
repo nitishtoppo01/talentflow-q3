@@ -30,6 +30,7 @@ run_step waterfall src/waterfall.py
 run_step crosscheck src/crosscheck.py
 run_step metrics   src/metrics.py
 run_step roadmap   src/roadmap.py
+run_step report    src/report.py
 
 if [ -d tests ]; then
   echo "== tests =="

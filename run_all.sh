@@ -25,7 +25,9 @@ $PY src/verify_pull.py
 
 run_step profile   src/profile.py
 run_step reproduce src/reproduce.py
-run_step audit   src/audit.py
+run_step audit     src/audit.py
+run_step waterfall src/waterfall.py
+run_step crosscheck src/crosscheck.py
 run_step metrics src/metrics.py
 
 if [ -d tests ]; then
